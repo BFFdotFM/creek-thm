@@ -30,6 +30,9 @@ var config_methods = {
   getThemeSettings: function(){
     var data = JSON.parse(fs.readFileSync(config.watch.path+ds+'theme.json'));
     return data;
+  },
+  getApiKeyForTheme: function(domain){
+    return settings.api_keys[config.theme.domain];
   }
 }
 
@@ -79,6 +82,7 @@ var methods = {
     var filename = path.basename(file_path)
     var meta = null;
     var content = null;
+    var uploaded_file = null;
 
     if(type=="pages"){
 
@@ -90,22 +94,33 @@ var methods = {
       content = fs.readFileSync(file_path);
 
     }
+    else if(type=="theme"){
+      // meta =
+      // content =
+    }
     else if(type=="blocks"){
       // meta =
       // content =
     }
     else if(type=="templates"){
-      // meta =
       content = fs.readFileSync(file_path, "utf8");
     }
-    else if(type=="theme"){
-      // meta =
-      // content =
+    else if(type=="files"){
+      var file_with_dir = file_path.replace(config.watch.path+"/files/", "")
+      meta = { file_path: file_with_dir };
+      uploaded_file = fs.createReadStream(file_path);
     }
 
+    //Return the prepared response
     return {
+
       meta: meta,
-      content: content
+      content: content,
+      uploaded_file: uploaded_file,
+
+      //Add API key
+      key: config_methods.getApiKeyForTheme()
+
     };
 
   },
@@ -158,7 +173,7 @@ methods.file = {
     }
 
     //If it's the theme.json file, then do nothing.
-    if(f.indexOf(ds+"theme.json")){
+    if(file_path.indexOf(ds+"theme.json")){
       return false;
     }
 
@@ -178,18 +193,28 @@ methods.file = {
 
     var type = methods.getTypeFromPath(file_path);
     var formData = methods.prepareFormData(type, file_path);
-
     var url = methods.getUrl(type, file_path);
+
+    c.debug(formData);
 
     request.post({
       url: url,
       form: formData
     }, function(err, httpResponse, body){
-      if(err){
+
+      var json = c.getJSONfromResponse(body);
+
+      if(err || json.error){
+        c.debug("Error while saving: "+Err);
+        // c.debug(err, 1);
         return false;
       }
+
       return true;
+
       c.debug("Saved.", 1);
+      c.debug("Response: "+json.data, 2);
+
     })
 
   }
@@ -204,7 +229,8 @@ var main_file_monitor = {};
 
 watch.createMonitor(config.watch.path, function (monitor) {
 
-  c.debug("File monitor is active.");
+  c.debug("File monitor ready.");
+  c.debug("Monitoring: "+config.watch.path);
   c.debug("Current theme: "+config.theme.id+"@"+config.theme.domain, 1);
 
   monitor.files[config.watch.path+ds+"theme.json"];
@@ -212,7 +238,6 @@ watch.createMonitor(config.watch.path, function (monitor) {
   monitor.on("created", function (file_path, stat) {
 
     c.debug("Created: "+file_path, 2);
-
     methods.file.created(file_path);
 
   })
@@ -225,11 +250,10 @@ watch.createMonitor(config.watch.path, function (monitor) {
   monitor.on("removed", function (file_path, stat) {
 
     c.debug("Removed: "+file_path, 2);
-    methods.file.deleted(file_path);
+    methods.file.removed(file_path);
 
   })
 
   var main_file_monitor = monitor;
 
-  // monitor.stop(); // Stop watching
 })
