@@ -1,4 +1,4 @@
-#Creek Theme tools
+#Creek Theme Tools
 
 This toolkit includes a file watcher, and a CLI for the Themes API.
 
