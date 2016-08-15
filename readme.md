@@ -23,5 +23,6 @@ This tool watches a theme's folder for changes, and updates the remote theme. If
 
 #### In development:
 
+- Update pages.
 - Update theme.json.
 - Update blocks.
