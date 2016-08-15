@@ -1,0 +1,13 @@
+{
+
+  "api_keys": {
+    "chigger.creek.fm": "yTImNapIpRGZsftgGuzQ"
+  },
+
+  "theme": {
+    "default_path": "/Users/travis/Documents/Creek/Theme Editor/test"
+  },
+
+  "debug_level": 3
+
+}
