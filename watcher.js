@@ -108,7 +108,10 @@ var methods = {
     else if(type=="files"){
       var file_with_dir = file_path.replace(config.watch.path+"/files/", "")
       meta = { file_path: file_with_dir };
-      uploaded_file = fs.createReadStream(file_path);
+      uploaded_file = fs.readFileSync(file_path).toString('base64');
+      // uploaded_file = fs.readFileSync(file_path).toString('base64');
+
+      // uploaded_file = fs.readFile(file_path);
     }
 
     //Return the prepared response
@@ -148,19 +151,20 @@ methods.file = {
     var url = methods.getUrl(type, file_path);
     var formData = methods.prepareFormData(type, file_path);
 
-    c.debug(url, 2);
-    c.debug(formData, 2);
+    // c.debug(url, 2);
+    // c.debug(formData, 2);
 
     request.put({
       url: url,
       form: formData
     }, function(err, httpResponse, body){
       if(err){
+        c.debug("Saved: "+file_path, 1);
         return false;
       }
       // c.debug(err);
       // c.debug(httpResponse);
-      c.debug(body);
+      // c.debug(body);
       c.debug("Saved: "+file_path, 1);
       return true;
     })
@@ -195,8 +199,6 @@ methods.file = {
     var formData = methods.prepareFormData(type, file_path);
     var url = methods.getUrl(type, file_path);
 
-    c.debug(formData);
-
     request.post({
       url: url,
       form: formData
@@ -204,8 +206,13 @@ methods.file = {
 
       var json = c.getJSONfromResponse(body);
 
-      if(err || json.error){
-        c.debug("Error while saving: "+Err);
+      if(err){
+        c.debug("Error while saving: "+err);
+        // c.debug(err, 1);
+        return false;
+      }
+      if(json.error){
+        c.debug("Error in save response: "+json.error);
         // c.debug(err, 1);
         return false;
       }
