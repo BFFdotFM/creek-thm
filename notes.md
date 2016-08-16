@@ -20,3 +20,10 @@
   Ok, key added.
   ```
 - the initial theme-tools.json in ~/.creek should have a placeholder object structure.
+
+## Other to-do items
+
+- Pages.
+- theme.json
+- blocks
+- Theme config object doesn't actually update.

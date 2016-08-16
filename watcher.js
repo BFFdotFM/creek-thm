@@ -158,15 +158,28 @@ methods.file = {
       url: url,
       form: formData
     }, function(err, httpResponse, body){
+
+      var json = c.getJSONfromResponse(body);
+
       if(err){
-        c.debug("Saved: "+file_path, 1);
+        c.debug("Error while saving: "+err);
+        // c.debug(err, 1);
         return false;
       }
+      if(json.error){
+        c.debug("Error in save response: "+json.error);
+        // c.debug(err, 1);
+        return false;
+      }
+
       // c.debug(err);
       // c.debug(httpResponse);
       // c.debug(body);
+
       c.debug("Saved: "+file_path, 1);
+
       return true;
+
     })
 
   },
