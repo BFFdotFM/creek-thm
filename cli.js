@@ -80,6 +80,8 @@ program
 
         // return;
 
+        process.exit();
+
       });
 
       return;
@@ -88,13 +90,13 @@ program
 
     //If already installed
     if(command == "install" && fs.existsSync(user_theme_settings.getSettingsDir())){
-      console.log(chalk.bold.red('INSTALL ERROR: ')+"Directory already exists: "+install.getSettingsDir());
+      console.log(chalk.bold.red('INSTALL ERROR: ')+"Directory already exists: "+user_theme_settings.getSettingsDir());
       console.log("Install will not overwrite this directory. Please check the settings.json file inside that directory to make sure you want to delete it. If so, then run: creek-themes uninstall");
       return;
     }
 
     if(command == "uninstall" && fs.existsSync(user_theme_settings.getSettingsDir())){
-      console.log(chalk.bold.green('UNINSTALLED: ')+"Settings directory removed: "+install.getSettingsDir());
+      console.log(chalk.bold.green('UNINSTALLED: ')+"Settings directory removed: "+user_theme_settings.getSettingsDir());
       uninstall.settings();
       return;
     }
