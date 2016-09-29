@@ -1,4 +1,4 @@
-#Creek Theme Tools
+# Creek Theme Tools
 
 This toolkit includes a file watcher, and a CLI for the Themes API.
 
@@ -20,13 +20,13 @@ This tool watches a theme's folder for changes, and updates the remote theme. If
         1. Look for API key (you may need to reset it before it works).
 1. `cd` into the folder where you would like to download the remote theme.
 1. List the available themes: `creek-themes list example-domain.com`
-1. Download the desired theme to your local machine: `creek-themes download 123@example-domain.com`
-    - `123` is the ID number of the theme.
+1. Download the desired theme to your local machine: `creek-themes download 123@example-domain.com` &mdash; In this example, **123** is the ID number of the theme.
+1. `cd` into the theme's directory.
 1. Start the watcher: `creek-themes watch`
 
 ## Commands
 
-### While inside a theme directory
+#### While inside a theme directory
 
 Run these after `cd`-ing into the theme's directory.
 
@@ -35,7 +35,7 @@ Run these after `cd`-ing into the theme's directory.
 - `creek-themes status publish` &mdash; publish this theme.
 - `creek-themes status ` &mdash; publish for all user types, just managers, or just hosts.
 
-### While inside any directory
+#### While inside any directory
 
 - `creek-themes install` &mdash; configure creek-themes environment. Adds files to: `~/.creek-themes/...`
 - `creek-themes uninstall` &mdash; remove creek-themes environment settings. Removes files from: `~/.creek-themes/...`
