@@ -27,3 +27,36 @@
 - theme.json
 - blocks
 - Theme config object doesn't actually update.
+
+
+- It's going to need blocks for CSS.
+- CSS and JS files should have a CSS or JS file in addition to a .json file.
+- CSS blocks that have stylus enabled should have a .styl file in the folder.
+- Same with JS and CoffeeScript.
+- HTML blocks should have block-name.html
+
+- css-main.json
+
+    ```
+    {
+      "type": "css",
+      "name": "css-main",
+      "preprocessor": "stylus"
+    }
+    ```
+
+- BUG: The HTML page is downloaded in Jade and monitor.js is looking for .html
+
+- BUG: The page-name.json and theme.json have different domains: www.kusf.org and kusf.creek.fm
+
+- theme.json settings loaded in JS are not updated when file is change
+
+
+# Doc Notes
+
+
+### Pages
+
+- Pages must have a meta JSON object to go with them.
+- Pages must be in a flat directory: only `./pages/*` not `./pages/example/extra/path/*`
+- `short_name` is implied by the filename by default, but you can override it in `page-name.json` to get special paths like: `example/path/hello.file`

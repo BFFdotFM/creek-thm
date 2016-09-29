@@ -36,17 +36,45 @@ var chalk = require('chalk');
 //Include modules from ./lib
 var install = require('./lib/install');
 var uninstall = require('./lib/uninstall');
+var c = require('./lib/common');
 
 //Get settings from ~/.creek-themes/settings.json
 var user_theme_settings = require('./lib/user-settings');
 
-program
-  .arguments('<file>')
-  .option('-t, --theme theme-name@example.com', 'A remote theme to pull and start editing.')
-  .action(function(command) {
+//Random CLI methods
+var cli_methods = require('./lib/cli-methods');
 
-    //Check if it's been installed already
-    if (command !== "install" && command !== "uninstall" && !fs.existsSync(user_theme_settings.getSettingsDir())){
+//Command prompt: download
+program
+  .command('download [theme_address]')
+  .action(function(theme_address) {
+    cli_methods.download(theme_address);
+  });
+
+//Command prompt: list themes
+program
+  .command('list [domain]')
+  .action(function(theme_address) {
+    cli_methods.list(theme_address);
+  });
+
+//Command prompt: update theme status
+program
+  .command('status [status_type]')
+  .action(function(status_type) {
+    cli_methods.status(status_type);
+  });
+
+//Command prompt: theme functions (install, watch, ...)
+program
+  .action(function(command, options) {
+
+    //Check if creek-themes has been installed already
+    if(
+      command !== "install"
+      && command !== "uninstall"
+      && !fs.existsSync(user_theme_settings.getSettingsDir())
+    ){
       console.log(chalk.bold.blue('INSTALL NEEDED: ')+"Creek theme tools have not yet been installed.");
       console.log(chalk.bold.black('INSTRUCTIONS: ')+"To install, run: creek-themes install");
       return;
@@ -116,6 +144,21 @@ program
 
       return;
 
+    }
+
+    if(command == "pull" || command == "reset"){
+      cli_methods.pull(theme_id, website_domain);
+      return;
+    }
+
+    if(command == "publish"){
+      cli_methods.publish(theme_id, website_domain);
+      return;
+    }
+
+    if(command == "edit"){
+      cli_methods.edit(theme_id, website_domain);
+      return;
     }
 
   })
