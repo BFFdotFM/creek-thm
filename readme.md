@@ -42,15 +42,17 @@ Run these after `cd`-ing into the theme's directory.
 - `creek-themes download 123@example-domain.com` &mdash; download the theme folder.
 - `creek-themes list example-domain.com` &mdash; list all of the themes at a domain.
 
-
 ## TODO:
 
 - Ability to update theme.json settings.
 - Sync theme up.
 - Initialize blank theme, with folder structure and theme.json file.
-- Label themes in themes list as editing, published, ...
-- Make sure that zip file's blocks include markup files.
-- List blocks, templates, pages.
+- Add editing/published status markers to theme list API's response data.
+- Make sure that blocks (in an exported theme's zip file) include markup files.
+- API endpoints: List blocks, templates, pages.
+- On theme import and upload, use block-name.html/js/css/jade/etc. for `text` rather than `text` from block-name.json.
+- Add theme id@domain option to the status updaters, so that you don't need to download the theme and cd into to in order to publish or preview it (i.e. set as editing theme on website).
+- Add or edit API key for a domain from the command line: `creek-themes add-key domain-name.com ce3s73w90f3wh`
 
 ## Tips
 
