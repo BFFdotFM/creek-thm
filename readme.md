@@ -21,7 +21,7 @@ This tool watches a theme's folder for changes, and updates the remote theme. If
 1. `cd` into the folder where you would like to download the remote theme.
 1. List the available themes: `creek-themes list example-domain.com`
 1. Download the desired theme to your local machine: `creek-themes download 123@example-domain.com`
-  - In this example, **123** is the ID number of the theme.
+    - In this example, **123** is the ID number of the theme.
 1. `cd` into the theme's directory.
 1. Start the watcher: `creek-themes watch`
 
@@ -33,22 +33,22 @@ Run these after `cd`-ing into the theme's directory.
 
 - `creek-themes watch`
 - `creek-themes status edit`
-  - edit this theme.
+    - edit this theme.
 - `creek-themes status publish`
-  - publish this theme.
+    - publish this theme.
 - `creek-themes status `
-  - publish for all user types, just managers, or just hosts.
+    - publish for all user types, just managers, or just hosts.
 
 #### While inside any directory
 
 - `creek-themes install`
-  - configure creek-themes environment. Adds files to: `~/.creek-themes/...`
+    - configure creek-themes environment. Adds files to: `~/.creek-themes/...`
 - `creek-themes uninstall`
-  - remove creek-themes environment settings. Removes files from: `~/.creek-themes/...`
+    - remove creek-themes environment settings. Removes files from: `~/.creek-themes/...`
 - `creek-themes download 123@example-domain.com`
-  - download the theme folder.
+    - download the theme folder.
 - `creek-themes list example-domain.com`
-  - list all of the themes at a domain.
+    - list all of the themes at a domain.
 
 ## TODO:
 
