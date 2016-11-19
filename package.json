@@ -18,15 +18,17 @@
     "coffee-script": "^1.10.0",
     "commander": "^2.9.0",
     "fs-extra": "^0.30.0",
-    "jade": "^1.11.0",
+    "git-rev-sync": "^1.8.0",
+    "micromatch": "^2.3.11",
     "moment": "^2.14.1",
     "needle": "^1.1.0",
     "pug": "^2.0.0-beta6",
+    "recursive-readdir": "^2.1.0",
     "replace": "^0.3.0",
     "request": "^2.74.0",
     "stylus": "^0.54.5",
     "underscore": "^1.8.3",
-    "unzip": "^0.1.11",
-    "watch": "^0.19.1"
+    "unzip2": "^0.2.5",
+    "watch": "1.0.x"
   }
 }

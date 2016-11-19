@@ -49,7 +49,7 @@
 
 - BUG: The page-name.json and theme.json have different domains: www.kusf.org and kusf.creek.fm
 
-- theme.json settings loaded in JS are not updated when file is change
+- theme.json settings loaded in JS are not updated when file is changed
 
 
 # Doc Notes

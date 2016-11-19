@@ -1,5 +1,5 @@
 {
-  "debug_level": 3,
+  "debug_level": 0,
   "api_keys": {
     "website-name.creek.fm": "API_KEY_GOES_HERE"
   }

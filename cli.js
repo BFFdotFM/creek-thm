@@ -2,24 +2,7 @@
 
 /*
 
-A simple CLI for the Creek Themes API
-
-------------------------------------------
-
-creek-themes install
-creek-themes uninstall
-creek-themes watch
-
-------------------------------------------
-
-FUTURE EXAMPLE USAGE NOT YET BUILT:
-
-Get theme files as a new dir (like git clone)
-(Creates local copy if it doesn't exist.)
-
-> creek-themes pull cool-theme1@example.creek.fm
-
-- Gets a zip file of the theme, and unzips it into the current directory.
+A simple CLI for the Creek Themes API.
 
 */
 
@@ -32,6 +15,7 @@ var co = require('co');
 var prompt = require('co-prompt');
 var program = require('commander');
 var chalk = require('chalk');
+var git = require("git-rev-sync");
 
 //Include modules from ./lib
 var install = require('./lib/install');
@@ -44,98 +28,183 @@ var user_theme_settings = require('./lib/user-settings');
 //Random CLI methods
 var cli_methods = require('./lib/cli-methods');
 
-//Command prompt: download
-program
-  .command('download [theme_address]')
-  .action(function(theme_address) {
-    cli_methods.download(theme_address);
-  });
 
-//Command prompt: list themes
+//Install theme tools
 program
-  .command('list [domain]')
-  .action(function(theme_address) {
-    cli_methods.list(theme_address);
-  });
+.command('install')
+.action(function(status_type) {
+  install.command();
+  cli_methods.status(status_type);
+});
 
-//Command prompt: update theme status
+//Uninstall theme tools
 program
-  .command('status [status_type]')
+  .command('uninstall')
   .action(function(status_type) {
+    uninstall.command();
     cli_methods.status(status_type);
   });
 
-//Command prompt: theme functions (install, watch, ...)
+//Download theme (and unzip the zip)
 program
-  .action(function(command, options) {
+  .command('download [theme_address]')
+  .action(function(theme_address) {
+    if(install.check()){
+      cli_methods.download(theme_address, false);
+    }
+  });
 
-    //Check if creek-themes has been installed already
-    if(
-      command !== "install"
-      && command !== "uninstall"
-      && !fs.existsSync(user_theme_settings.getSettingsDir())
-    ){
-      console.log(chalk.bold.blue('INSTALL NEEDED: ')+"Creek theme tools have not yet been installed.");
-      console.log(chalk.bold.black('INSTRUCTIONS: ')+"To install, run: creek-themes install");
+//Download a zip file of the theme (or rather, don't unzip)
+program
+  .command('download-zip [theme_address]')
+  .action(function(theme_address) {
+    if(install.check()){
+      cli_methods.download(theme_address, true);
+    }
+  });
+
+//List themes for domain
+program
+  .command('list [domain]')
+  .action(function(theme_address) {
+    if(install.check()){
+      cli_methods.list(theme_address);
+    }
+  });
+
+//API keys: Add for domain
+program
+  .command('add-key [domain] [key]')
+  .action(function(domain, key) {
+    if(install.check()){
+      cli_methods.addKey(domain, key);
+    }
+  });
+
+//API keys: Get all keys
+program
+  .command('get-keys')
+  .action(function() {
+    if(install.check()){
+      cli_methods.getKeys();
+    }
+  });
+
+//API keys: Get for domain
+program
+  .command('get-key [domain]')
+  .action(function(domain) {
+    if(install.check()){
+      cli_methods.getKey(domain);
+    }
+  });
+
+//API key: Delete for domain
+program
+  .command('delete-key [domain]')
+  .action(function(domain) {
+    if(install.check()){
+      cli_methods.deleteKey(domain);
+    }
+  });
+
+//Theme: change status
+program
+  // Status types: editing | public | public_managers | public_hosts
+  .command('status [status_type]')
+  .action(function(status_type) {
+    if(install.check()){
+      cli_methods.status(status_type);
+    }
+  });
+
+//Theme: Sync up/down
+program
+  .command('sync [direction]') // up | down
+  .action(function(direction) {
+    if(!direction){
+      console.log(chalk.bold.red("Error:")+" You must specify a sync direction: "+chalk.bold.blue("up")+" (sync local to remote) or "+chalk.bold.blue("down")+" (sync remote to local)")
       return;
     }
+    if(install.check()){
+      cli_methods.sync(direction);
+    }
+  });
 
-    if(command == "install" && !fs.existsSync(user_theme_settings.getSettingsDir())){
+//TODO:
+//Create a theme folder with theme.json inside
+program
+  .command('create')
+  .action(function(status_type, theme_title) {
+    if(install.check()){
+      cli_methods.createTheme(status_type);
+    }
+  });
 
-      co(function *() {
+//Push file
+program
+  .command('push [file_path]')
+  .action(function(file_path) {
+    if(install.check()){
+      cli_methods.pushFile(file_path);
+    }
+  });
 
-        console.log(" ");
-        console.log(chalk.bold.cyan('---------- Installation ----------'));
-        console.log(" ");
-        console.log(chalk.bold.blue('First, we need an API key.'));
-        console.log("1. Sign in to the Creek Control Panel that's hosting the theme.");
-        console.log("2. Go to your user profile. Click your name in the top toolbar, then click Profile.");
-        console.log("3. Find your API key on this page, copy it, and paste it below.");
-        var api_key = yield prompt(chalk.bold.black('Enter API key: '));
+//Pull file
+program
+  .command('pull [file_path]')
+  .action(function(file_path) {
+    if(install.check()){
+      cli_methods.pullFile(file_path);
+    }
+  });
 
-        console.log(" ");
-        console.log(chalk.bold.blue('Second, we need a domain. '));
-        console.log("What is the domain of this Creek website? (example: website-name.creek.fm)");
-        var domain = yield prompt(chalk.bold.black('Enter domain: '));
+//Test git branch
+program
+  .command('test-git')
+  .action(function() {
+    try {
 
-        var install_results = install.settings(domain, api_key);
+      console.log(chalk.bold.green("Git:")+" Testing git branch:")
+      console.log(git.branch(process.cwd()))
+      console.log(chalk.bold.green("Git:")+" Testing git commit ID:")
+      console.log(git.short(process.cwd()))
+      console.log(chalk.bold.green("Git:")+" Testing git commit message:")
+      console.log(git.message(process.cwd()))
 
-        // console.log(install_results.success);
-        console.log(" ");
+    } catch (e) {
 
-        console.log(chalk.bold.green('INSTALLED: ')+"Created settings directory: "+user_theme_settings.getSettingsDir());
-        console.log(chalk.bold.green('SETTINGS ADDED: ')+"Created settings.json that contains your API keys: "+user_theme_settings.getSettingsFilePath());
-
-        // return;
-
-        process.exit();
-
-      });
-
-      return;
+      console.log(e);
 
     }
+  });
 
-    //If already installed
-    if(command == "install" && fs.existsSync(user_theme_settings.getSettingsDir())){
-      console.log(chalk.bold.red('INSTALL ERROR: ')+"Directory already exists: "+user_theme_settings.getSettingsDir());
-      console.log("Install will not overwrite this directory. Please check the settings.json file inside that directory to make sure you want to delete it. If so, then run: creek-themes uninstall");
-      return;
-    }
+// //TODO:
+// //Push all files to remote theme. Same as sync up.
+// program
+//   .command('push')
+//   .action(function() {
+//     if(install.check()){
+//       cli_methods.pushTheme();
+//     }
+//   });
+//
+// //TODO:
+// //Pull all files from remote theme. Same as sync down.
+// program
+//   .command('pull')
+//   .action(function() {
+//     if(install.check()){
+//       cli_methods.pullTheme();
+//     }
+//   });
 
-    if(command == "uninstall" && fs.existsSync(user_theme_settings.getSettingsDir())){
-      console.log(chalk.bold.green('UNINSTALLED: ')+"Settings directory removed: "+user_theme_settings.getSettingsDir());
-      uninstall.settings();
-      return;
-    }
+//Command prompt: watch the folder for changes
+program
+  .command('watch')
+  .action(function() {
 
-    if(command == "uninstall" && !fs.existsSync(user_theme_settings.getSettingsDir())){
-      console.log(chalk.bold.red('ERROR: ')+"Can't uninstall, since it's not installed yet. Settings directory does not yet exist: "+install.getSettingsDir());
-      return;
-    }
-
-    //Finally, all the way down here, the monitoring thing:
-    if(command == "watch"){
+    if(install.check()){
 
       //Only include the file monitor, now that we're in a theme folder.
       var monitor = require('./lib/monitor');
@@ -146,20 +215,6 @@ program
 
     }
 
-    if(command == "pull" || command == "reset"){
-      cli_methods.pull(theme_id, website_domain);
-      return;
-    }
+  });
 
-    if(command == "publish"){
-      cli_methods.publish(theme_id, website_domain);
-      return;
-    }
-
-    if(command == "edit"){
-      cli_methods.edit(theme_id, website_domain);
-      return;
-    }
-
-  })
-  .parse(process.argv);
+program.parse(process.argv);

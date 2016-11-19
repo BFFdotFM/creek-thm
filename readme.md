@@ -4,7 +4,7 @@ This toolkit includes a file watcher, and a CLI for the Themes API.
 
 ## Watcher
 
-This tool watches a theme's folder for changes, and updates the remote theme. If it detects a change, then it will take the right action with that file: updating templates, blocks, regular files, pages, or theme.json.
+This tool watches a theme's folder for changes, and updates the remote theme.
 
 ### Using the Watcher
 
@@ -49,9 +49,16 @@ Run these after `cd`-ing into the theme's directory.
     - download the theme folder.
 - `creek-themes list example-domain.com`
     - list all of the themes at a domain.
+- `creek-themes add-key example-domain.com key-goes-here`
+    - add a new API key to your user settings for a domain.
+- `creek-themes get-keys`
+    - returns a list of all stored API keys in JSON format from your user settings.
+- `creek-themes get-key example-domain.com`
+    - gets the stored API key for a domain from your user settings.
 
 ## TODO:
 
+- Pages are updated globally, rather than per-theme. Breaks staging workflow.
 - Ability to update theme.json settings.
 - Sync theme up.
 - Initialize blank theme, with folder structure and theme.json file.
@@ -61,6 +68,15 @@ Run these after `cd`-ing into the theme's directory.
 - On theme import and upload, use block-name.html/js/css/jade/etc. for `text` rather than `text` from block-name.json.
 - Add theme id@domain option to the status updaters, so that you don't need to download the theme and cd into to in order to publish or preview it (i.e. set as editing theme on website).
 - Add or edit API key for a domain from the command line: `creek-themes add-key domain-name.com ce3s73w90f3wh`
+
+#### For git collaboration:
+
+- theme.git_branch -- make sure that the branch of the current working directory is sync'd to the theme with the same branch. This allows users to work on their own separate branches, and then update those branches. And when the branch is merged into master, then we run sync on that branch. Or, we can do a deployment hook on git? No.
+- theme.git_url -- URL to the theme's git repo. There must be only one official git repo. No forks. If there are forks and someone edits the master branch on that fork, then it will overwrite the actual homepage.
+- Check git branch on every save. If git branch is true or has a value, then make sure the changes are submitted to the correct theme with the right branch by including the branch name.
+- git_branch should not be in theme.json, it should always be figured out by the current branch in the working directory, or with the "--branch branch-name" option.
+- Add git brach to the theme title in the theme editor themes drop-down.
+- Add git branch and git URL to the theme edit panel.
 
 ## Tips
 
