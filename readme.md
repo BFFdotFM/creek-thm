@@ -1,4 +1,4 @@
-# thm
+# Creek Theme Toolkit
 
 A theme developer toolkit (CLI) for the Creek website platform and its Themes API.
 
