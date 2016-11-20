@@ -60,3 +60,46 @@
 - Pages must have a meta JSON object to go with them.
 - Pages must be in a flat directory: only `./pages/*` not `./pages/example/extra/path/*`
 - `short_name` is implied by the filename by default, but you can override it in `page-name.json` to get special paths like: `example/path/hello.file`
+
+
+
+
+
+
+
+
+
+## TODO:
+
+- Theme unique IDs: theme.unique should be a short identifier like `xrayfm` or `basic-thin`
+- Pages are updated globally, rather than per-theme. Breaks staging workflow.
+- Fix the "(you may need to reset it [API key] before it works)" thing.
+- Ability to update theme.json settings.
+- Initialize blank theme, with folder structure and theme.json file.
+- Add editing/published status markers to theme list API's response data.
+- API endpoints: List blocks, templates, pages.
+- Add theme id@domain option to the status updaters, so that you don't need to download the theme and cd into it in order to publish or preview it (i.e. set as editing theme on website).
+
+#### For git collaboration:
+
+- theme.git_branch -- make sure that the branch of the current working directory is sync'd to the theme with the same branch. This allows users to work on their own separate branches, and then update those branches. And when the branch is merged into master, then we run sync on that branch. Or, we can do a deployment hook on git? No.
+- theme.git_url -- URL to the theme's git repo. There must be only one official git repo. No forks. If there are forks and someone edits the master branch on that fork, then it will overwrite the actual homepage.
+- Check git branch on every save. If git branch is true or has a value, then make sure the changes are submitted to the correct theme with the right branch by including the branch name.
+- git_branch should not be in theme.json, it should always be figured out by the current branch in the working directory, or with the "--branch branch-name" option.
+- Add git brach to the theme title in the theme editor themes drop-down.
+- Add git branch and git URL to the theme edit panel.
+
+- On sync, delete all of blocks/templates/files first. (Uh, watch out?)
+
+#### Before deployment:
+- Write documentation on how to do the new git workflow
+
+
+
+1. Create a new branch: `git checkout -b name-of-branch`
+1. Sync this theme to create it at the remote website: `creek-themes sync up`
+1. Set this as the editing theme: `creek-themes status edit`
+
+
+
+Possible names:

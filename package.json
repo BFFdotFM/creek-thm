@@ -1,13 +1,13 @@
 {
-  "name": "creek-themes",
+  "name": "thm",
   "version": "0.1.5",
-  "description": "Theme tools for the Creek website framework.",
+  "description": "Theme toolkit for the Creek website platform.",
   "repository": {
     "type": "git",
-    "url": "http://bitbucket.org/creekfm/theme-tools"
+    "url": "http://git.creek.fm/open/theme-tools"
   },
   "bin": {
-    "creek-themes": "cli.js"
+    "thm": "cli.js"
   },
   "main": "lib/cli.js",
   "preferGlobal": "true",
