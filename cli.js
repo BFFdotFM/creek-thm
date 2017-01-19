@@ -31,18 +31,16 @@ var cli_methods = require('./lib/cli-methods');
 
 //Install theme tools
 program
-.command('install')
-.action(function(status_type) {
-  install.command();
-  cli_methods.status(status_type);
-});
+  .command('install')
+  .action(function() {
+    install.command();
+  });
 
 //Uninstall theme tools
 program
   .command('uninstall')
-  .action(function(status_type) {
+  .action(function() {
     uninstall.command();
-    cli_methods.status(status_type);
   });
 
 //Download theme (and unzip the zip)

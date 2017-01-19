@@ -63,15 +63,19 @@
 
 
 
-
-
-
-
-
-
 ## TODO:
 
-- Theme unique IDs: theme.unique should be a short identifier like `xrayfm` or `basic-thin`
+- stylus exported as *.stylus instead of *.styl
+- don't crash if the markup parser fails, instead show ERROR
+- page update fails on kkxx.creek.fm
+- retry failed remote saves
+- js-vue.js limited to 65535 bytes: https://www.google.com/search?q=65535+in+binary
+- Warn if using master API key, not user API key
+- XRAY.fm user API key cannot be changed on profile page
+- Move theme files to S3.
+- Block settings don't actually save for the special blocks like "posts". Just the main block settings that go into the MySQL block.x data, not block_settings.
+- Automatically set the editing theme to the current one that the user is editing.
+- Theme unique IDs: theme.unique should be a short identifier like `xrayfm` or `basic-thing`
 - Pages are updated globally, rather than per-theme. Breaks staging workflow.
 - Fix the "(you may need to reset it [API key] before it works)" thing.
 - Ability to update theme.json settings.

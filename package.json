@@ -1,6 +1,6 @@
 {
   "name": "thm",
-  "version": "0.1.5",
+  "version": "0.1.14",
   "description": "Theme toolkit for the Creek website platform.",
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
     "co-prompt": "^1.0.0",
     "coffee-script": "^1.10.0",
     "commander": "^2.9.0",
+    "find-parent-dir": "^0.3.0",
     "fs-extra": "^0.30.0",
     "git-rev-sync": "^1.8.0",
     "micromatch": "^2.3.11",
