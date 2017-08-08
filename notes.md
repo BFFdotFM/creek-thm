@@ -63,8 +63,36 @@
 
 
 
+# Show system dialog if the file was edited in the browser after the file was last edited by `thm`
+
+### On Mac:
+
+```
+Traviss-MacBook-Pro:wybc travis$ osascript -e 'tell app "System Events" to display dialog "Creek Themes Toolkit: \n\nWARNING: This theme file (blah.html) was edited in the browser. \n\nAre you sure you want to save?"' 
+button returned:OK
+Traviss-MacBook-Pro:wybc travis$ osascript -e 'tell app "System Events" to display dialog "Creek Themes Toolkit: \n\nWARNING: This theme file (blah.html) was edited in the browser. \n\nAre you sure you want to save?"' 
+28:169: execution error: System Events got an error: User canceled. (-128)
+Traviss-MacBook-Pro:wybc travis$ 
+```
+
+### On PC:
+
+```
+I dunno.
+```
+
+### On Linux:
+
+```
+I dunno.
+```
+
+
+
+
 ## TODO:
 
+- Auto-select the last edited theme as the current editing theme, and add a setting to ~/creek-themes/settings.json: `{ auto_edit_theme: true }`
 - stylus exported as *.stylus instead of *.styl
 - don't crash if the markup parser fails, instead show ERROR
 - page update fails on kkxx.creek.fm
